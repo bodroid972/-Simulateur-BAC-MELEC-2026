@@ -1,265 +1,429 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulateur BAC PRO MELEC 2026</title>
 
-    <title>Simulateur BAC MELEC 2026</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            background: #f2f4f7;
-            color: #222;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            margin: 10px 0 5px;
-            text-align: center;
-            font-size: 28px;
-            color: #1565c0;
-        }
-
-        .sous-titre {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #555;
-            font-size: 16px;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            margin-bottom: 18px;
-            border-radius: 14px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.10);
-        }
-
-        .card h2 {
-            margin-top: 0;
-            color: #1565c0;
-            font-size: 20px;
-        }
-
-        label {
-            display: block;
-            margin-top: 14px;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            font-size: 17px;
-            border: 1px solid #bbb;
-            border-radius: 8px;
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            margin-top: 20px;
-            background: #1565c0;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:active {
-            background: #0d47a1;
-        }
-
-        #resultat {
-            display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background: #e8f5e9;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .note {
-            font-size: 34px;
-            font-weight: bold;
-            color: #2e7d32;
-        }
-
-        .mention {
-            font-size: 22px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .info {
-            font-size: 15px;
-            color: #555;
-            margin-top: 10px;
-        }
-
-        .erreur {
-            display: none;
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 8px;
-            background: #ffebee;
-            color: #b71c1c;
-            font-weight: bold;
-        }
-    </style>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:16px;font-family:Arial,Helvetica,sans-serif;background:#f3f6f9;color:#1f2937}
+.container{max-width:760px;margin:auto}
+header{background:#1565c0;color:#fff;border-radius:18px;padding:22px 18px;text-align:center;margin-bottom:16px}
+header h1{margin:0;font-size:27px}
+header p{margin:7px 0 0;font-size:15px}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.10)}
+h2{color:#1565c0;margin:0 0 14px;font-size:21px}
+.item{margin:14px 0;padding-bottom:12px;border-bottom:1px solid #e5e7eb}
+.item:last-child{border-bottom:0}
+.labelrow{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+.labelrow label{font-weight:bold;line-height:1.3}
+.coef{background:#e3f2fd;color:#0d47a1;border-radius:999px;padding:4px 8px;font-size:13px;font-weight:bold;white-space:nowrap}
+.highlight{background:#fff7d6;border:2px solid #f4b400;border-radius:12px;padding:12px}
+input{width:100%;padding:12px;border:1px solid #b8c0cc;border-radius:9px;font-size:17px}
+button{width:100%;border:0;border-radius:11px;padding:15px;margin-top:10px;font-size:18px;font-weight:bold}
+.calc{background:#1565c0;color:#fff}
+.reset{background:#616161;color:#fff}
+#erreur{display:none;margin-top:12px;padding:12px;border-radius:9px;background:#ffebee;color:#b71c1c;font-weight:bold}
+#resultat{display:none}
+.resultbox{text-align:center;border-radius:15px;padding:20px;margin-bottom:14px}
+.green{background:#e8f5e9}
+.orange{background:#fff3e0}
+.red{background:#ffebee}
+.big{font-size:39px;font-weight:bold;margin:7px 0}
+.line{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #ddd;padding:10px 0}
+.line:last-child{border-bottom:0}
+.info{background:#fff8e1;border-radius:11px;padding:13px;font-size:14px;line-height:1.45;margin-top:12px}
+.small{font-size:13px;color:#64748b}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+th,td{border-bottom:1px solid #ddd;padding:8px 5px;text-align:left}
+th{background:#eef4fb}
+.right{text-align:right}
+</style>
 </head>
 
 <body>
-
 <div class="container">
 
-    <h1>SIMULATEUR BAC MELEC 2026</h1>
+<header>
+<h1>⚡ BAC PRO MELEC 2026</h1>
+<p>Simulateur pédagogique des notes et coefficients</p>
+</header>
 
-    <div class="sous-titre">
-        Simulation de tes résultats au baccalauréat professionnel
-    </div>
+<div class="card">
+<h2>Épreuves scientifiques</h2>
 
-    <div class="card">
+<div class="item">
+<div class="labelrow">
+<label for="maths">E11 — Mathématiques</label>
+<span class="coef">coef. 1,5</span>
+</div>
+<input id="maths" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+</div>
 
-        <h2>Mes résultats</h2>
+<div class="item">
+<div class="labelrow">
+<label for="physique">E12 — Physique-chimie</label>
+<span class="coef">coef. 1,5</span>
+</div>
+<input id="physique" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+</div>
+</div>
 
-        <label for="ccf">
-            Moyenne du contrôle en cours de formation /20
-        </label>
+<div class="card">
+<h2>Épreuves professionnelles</h2>
 
-        <input
-            type="number"
-            id="ccf"
-            min="0"
-            max="20"
-            step="0.1"
-            placeholder="Exemple : 13.5">
+<div class="item">
+<div class="labelrow">
+<label for="e2">E2 — Préparation des opérations à réaliser</label>
+<span class="coef">coef. 3</span>
+</div>
+<input id="e2" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+</div>
 
-        <label for="epreuves">
-            Moyenne des épreuves terminales /20
-        </label>
+<div class="item highlight">
+<div class="labelrow">
+<label for="e31">E31 — Réalisation ET mise en service d'une installation</label>
+<span class="coef">coef. 7</span>
+</div>
+<input id="e31" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+<div class="small" style="margin-top:7px">
+Exemple : gagner 3 points sur cette note représente 21 points pondérés.
+</div>
+</div>
 
-        <input
-            type="number"
-            id="epreuves"
-            min="0"
-            max="20"
-            step="0.1"
-            placeholder="Exemple : 12">
+<div class="item">
+<div class="labelrow">
+<label for="e32">E32 — Maintenance d'une installation</label>
+<span class="coef">coef. 2</span>
+</div>
+<input id="e32" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+</div>
 
-        <button type="button" onclick="calculer()">
-            CALCULER MON RÉSULTAT
-        </button>
+<div class="item">
+<div class="labelrow">
+<label for="eco">E33 — Économie-gestion</label>
+<span class="coef">coef. 1</span>
+</div>
+<input id="eco" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+</div>
 
-        <div id="erreur" class="erreur"></div>
+<div class="item">
+<div class="labelrow">
+<label for="pse">E34 — Prévention Santé Environnement</label>
+<span class="coef">coef. 1</span>
+</div>
+<input id="pse" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+</div>
+</div>
 
-        <div id="resultat">
+<div class="card">
+<h2>Enseignement général</h2>
 
-            <div>
-                Résultat estimé
-            </div>
+<div class="item">
+<div class="labelrow">
+<label for="lv">E4 — Langue vivante</label>
+<span class="coef">coef. 2</span>
+</div>
+<input id="lv" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+</div>
 
-            <div id="note" class="note">
-                --
-            </div>
+<div class="item">
+<div class="labelrow">
+<label for="francais">E51 — Français</label>
+<span class="coef">coef. 2,5</span>
+</div>
+<input id="francais" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+</div>
 
-            <div id="mention" class="mention">
-                --
-            </div>
+<div class="item">
+<div class="labelrow">
+<label for="hg">E52 — Histoire-géographie / EMC</label>
+<span class="coef">coef. 2,5</span>
+</div>
+<input id="hg" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+</div>
 
-            <div class="info">
-                Cette simulation est indicative.
-            </div>
+<div class="item">
+<div class="labelrow">
+<label for="arts">E6 — Arts appliqués et cultures artistiques</label>
+<span class="coef">coef. 1</span>
+</div>
+<input id="arts" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+</div>
 
-        </div>
+<div class="item">
+<div class="labelrow">
+<label for="eps">E7 — Éducation physique et sportive</label>
+<span class="coef">coef. 1</span>
+</div>
+<input id="eps" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+</div>
+</div>
 
-    </div>
+<div class="card">
+<h2>Projet / chef-d'œuvre</h2>
 
+<div class="item">
+<div class="labelrow">
+<label for="projet">Note du projet</label>
+<span class="coef">(note − 10) × 2</span>
+</div>
+<input id="projet" type="number" min="0" max="20" step="0.1" placeholder="Note /20">
+</div>
+
+<div class="info">
+Le projet est traité séparément : les points au-dessus ou au-dessous de 10 sont multipliés par 2 puis ajoutés ou retirés du total.
+</div>
+
+<button class="calc" type="button" onclick="calculer()">
+CALCULER MON BAC
+</button>
+
+<button class="reset" type="button" onclick="effacer()">
+EFFACER TOUTES LES NOTES
+</button>
+
+<div id="erreur"></div>
+</div>
+
+<div id="resultat">
+
+<div id="blocResultat" class="resultbox">
+<div>Moyenne générale simulée</div>
+<div id="moyenne" class="big"></div>
+<div id="decision" style="font-size:22px;font-weight:bold"></div>
+</div>
+
+<div class="card">
+<div class="line">
+<span>Points obligatoires</span>
+<b id="pointsObligatoires"></b>
+</div>
+
+<div class="line">
+<span>Impact du projet</span>
+<b id="impactProjet"></b>
+</div>
+
+<div class="line">
+<span>Total ajusté</span>
+<b id="totalAjuste"></b>
+</div>
+
+<div class="line">
+<span>Seuil de référence</span>
+<b>260 points</b>
+</div>
+
+<div class="line">
+<span>Écart au seuil</span>
+<b id="ecart"></b>
+</div>
+</div>
+
+<div class="card">
+<h2>Détail des points</h2>
+
+<table>
+<thead>
+<tr>
+<th>Épreuve</th>
+<th class="right">Note</th>
+<th class="right">Coef.</th>
+<th class="right">Points</th>
+</tr>
+</thead>
+
+<tbody id="detail"></tbody>
+</table>
+</div>
+
+<div id="conseil" class="info"></div>
+
+</div>
 </div>
 
 <script>
-    function calculer() {
 
-        const ccf =
-            parseFloat(document.getElementById("ccf").value);
+const epreuves = [
+{id:"maths",nom:"Mathématiques",coef:1.5},
+{id:"physique",nom:"Physique-chimie",coef:1.5},
+{id:"e2",nom:"E2 Préparation",coef:3},
+{id:"e31",nom:"E31 Réalisation + mise en service",coef:7},
+{id:"e32",nom:"E32 Maintenance",coef:2},
+{id:"eco",nom:"Économie-gestion",coef:1},
+{id:"pse",nom:"PSE",coef:1},
+{id:"lv",nom:"Langue vivante",coef:2},
+{id:"francais",nom:"Français",coef:2.5},
+{id:"hg",nom:"Histoire-géographie / EMC",coef:2.5},
+{id:"arts",nom:"Arts appliqués",coef:1},
+{id:"eps",nom:"EPS",coef:1}
+];
 
-        const epreuves =
-            parseFloat(document.getElementById("epreuves").value);
+function lireNote(id){
+const v=parseFloat(document.getElementById(id).value);
+return isNaN(v)?null:v;
+}
 
-        const erreur =
-            document.getElementById("erreur");
+function calculer(){
 
-        const resultat =
-            document.getElementById("resultat");
+const erreur=document.getElementById("erreur");
+erreur.style.display="none";
 
-        erreur.style.display = "none";
-        resultat.style.display = "none";
+let pointsObligatoires=0;
+let totalCoef=0;
+let lignes="";
 
-        if (
-            isNaN(ccf) ||
-            isNaN(epreuves) ||
-            ccf < 0 ||
-            ccf > 20 ||
-            epreuves < 0 ||
-            epreuves > 20
-        ) {
-            erreur.innerHTML =
-                "Entre deux notes comprises entre 0 et 20.";
+for(const e of epreuves){
 
-            erreur.style.display = "block";
-            return;
-        }
+const n=lireNote(e.id);
 
-        /*
-         * Simulation simple :
-         * 50 % CCF
-         * 50 % épreuves terminales
-         */
+if(n===null){
+erreur.innerHTML="⚠️ Merci de renseigner toutes les matières.";
+erreur.style.display="block";
+return;
+}
 
-        const moyenne =
-            (ccf + epreuves) / 2;
+if(n<0||n>20){
+erreur.innerHTML="⚠️ Toutes les notes doivent être comprises entre 0 et 20.";
+erreur.style.display="block";
+return;
+}
 
-        let mention = "";
+const pts=n*e.coef;
 
-        if (moyenne < 10) {
-            mention = "Non admis";
-        }
-        else if (moyenne < 12) {
-            mention = "Admis";
-        }
-        else if (moyenne < 14) {
-            mention = "Mention Assez bien";
-        }
-        else if (moyenne < 16) {
-            mention = "Mention Bien";
-        }
-        else {
-            mention = "Mention Très bien";
-        }
+pointsObligatoires+=pts;
+totalCoef+=e.coef;
 
-        document.getElementById("note").innerHTML =
-            moyenne.toFixed(2) + " / 20";
+lignes+=
+"<tr>"+
+"<td>"+e.nom+"</td>"+
+"<td class='right'>"+n.toFixed(1)+"</td>"+
+"<td class='right'>"+e.coef.toString().replace('.',',')+"</td>"+
+"<td class='right'><b>"+pts.toFixed(1)+"</b></td>"+
+"</tr>";
+}
 
-        document.getElementById("mention").innerHTML =
-            mention;
+const projet=lireNote("projet");
 
-        resultat.style.display = "block";
-    }
+if(projet===null||projet<0||projet>20){
+erreur.innerHTML="⚠️ Merci de renseigner une note de projet comprise entre 0 et 20.";
+erreur.style.display="block";
+return;
+}
+
+const impactProjet=(projet-10)*2;
+
+const totalAjuste=
+pointsObligatoires+impactProjet;
+
+const moyenne=
+totalAjuste/totalCoef;
+
+const ecart=
+totalAjuste-260;
+
+let decision="";
+let couleur="";
+
+if(moyenne>=16){
+decision="ADMIS — Mention Très Bien";
+couleur="green";
+}
+
+else if(moyenne>=14){
+decision="ADMIS — Mention Bien";
+couleur="green";
+}
+
+else if(moyenne>=12){
+decision="ADMIS — Mention Assez Bien";
+couleur="green";
+}
+
+else if(moyenne>=10){
+decision="ADMIS";
+couleur="green";
+}
+
+else{
+decision="SOUS 10/20 — simulation";
+couleur=moyenne>=9?"orange":"red";
+}
+
+document.getElementById("moyenne").innerHTML=
+moyenne.toFixed(2)+" / 20";
+
+document.getElementById("decision").innerHTML=
+decision;
+
+document.getElementById("blocResultat").className=
+"resultbox "+couleur;
+
+document.getElementById("pointsObligatoires").innerHTML=
+pointsObligatoires.toFixed(1)+" pts";
+
+document.getElementById("impactProjet").innerHTML=
+(impactProjet>=0?"+":"")+
+impactProjet.toFixed(1)+" pts";
+
+document.getElementById("totalAjuste").innerHTML=
+totalAjuste.toFixed(1)+" pts";
+
+document.getElementById("ecart").innerHTML=
+(ecart>=0?"+":"")+
+ecart.toFixed(1)+" pts";
+
+document.getElementById("detail").innerHTML=
+lignes;
+
+let conseil="";
+
+if(ecart<0){
+
+conseil=
+"Il manque environ <b>"+
+Math.abs(ecart).toFixed(1)+
+" points</b> pour atteindre le seuil de référence de 260 points.";
+}
+
+else{
+
+conseil=
+"Le seuil de référence de <b>260 points</b> est atteint.";
+}
+
+conseil+=
+"<br><br><b>Astuce :</b> modifie ensuite une seule note, par exemple E31, puis recalcule pour montrer immédiatement aux élèves l'effet du coefficient.";
+
+document.getElementById("conseil").innerHTML=
+conseil;
+
+document.getElementById("resultat").style.display=
+"block";
+
+document.getElementById("resultat")
+.scrollIntoView({behavior:"smooth"});
+}
+
+function effacer(){
+
+for(const e of epreuves){
+document.getElementById(e.id).value="";
+}
+
+document.getElementById("projet").value="";
+
+document.getElementById("resultat").style.display=
+"none";
+
+document.getElementById("erreur").style.display=
+"none";
+
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
 </script>
 
 </body>
