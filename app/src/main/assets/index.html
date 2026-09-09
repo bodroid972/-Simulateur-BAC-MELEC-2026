@@ -1,23 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test MELEC</title>
-</head>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<body style="background:white; padding:30px; font-family:Arial;">
+    <title>Simulateur BAC MELEC 2026</title>
 
-<h1 style="color:#1565C0;">
-SIMULATEUR BAC MELEC 2026
-</h1>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-<p style="font-size:22px;">
-L'application fonctionne correctement.
-</p>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f2f4f7;
+            color: #222;
+        }
 
-</body>
-</html>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 10px 0 5px;
+            text-align: center;
+            font-size: 28px;
+            color: #1565c0;
+        }
+
+        .sous-titre {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #555;
+            font-size: 16px;
+        }
+
         .card {
             background: white;
             padding: 20px;
@@ -26,7 +47,7 @@ L'application fonctionne correctement.
             box-shadow: 0 3px 10px rgba(0,0,0,0.10);
         }
 
-        h2 {
+        .card h2 {
             margin-top: 0;
             color: #1565c0;
             font-size: 20px;
@@ -57,6 +78,7 @@ L'application fonctionne correctement.
             border-radius: 10px;
             font-size: 18px;
             font-weight: bold;
+            cursor: pointer;
         }
 
         button:active {
@@ -85,4 +107,160 @@ L'application fonctionne correctement.
         }
 
         .info {
-            font-size:
+            font-size: 15px;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .erreur {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #ffebee;
+            color: #b71c1c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>SIMULATEUR BAC MELEC 2026</h1>
+
+    <div class="sous-titre">
+        Simulation de tes résultats au baccalauréat professionnel
+    </div>
+
+    <div class="card">
+
+        <h2>Mes résultats</h2>
+
+        <label for="ccf">
+            Moyenne du contrôle en cours de formation /20
+        </label>
+
+        <input
+            type="number"
+            id="ccf"
+            min="0"
+            max="20"
+            step="0.1"
+            placeholder="Exemple : 13.5">
+
+        <label for="epreuves">
+            Moyenne des épreuves terminales /20
+        </label>
+
+        <input
+            type="number"
+            id="epreuves"
+            min="0"
+            max="20"
+            step="0.1"
+            placeholder="Exemple : 12">
+
+        <button type="button" onclick="calculer()">
+            CALCULER MON RÉSULTAT
+        </button>
+
+        <div id="erreur" class="erreur"></div>
+
+        <div id="resultat">
+
+            <div>
+                Résultat estimé
+            </div>
+
+            <div id="note" class="note">
+                --
+            </div>
+
+            <div id="mention" class="mention">
+                --
+            </div>
+
+            <div class="info">
+                Cette simulation est indicative.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function calculer() {
+
+        const ccf =
+            parseFloat(document.getElementById("ccf").value);
+
+        const epreuves =
+            parseFloat(document.getElementById("epreuves").value);
+
+        const erreur =
+            document.getElementById("erreur");
+
+        const resultat =
+            document.getElementById("resultat");
+
+        erreur.style.display = "none";
+        resultat.style.display = "none";
+
+        if (
+            isNaN(ccf) ||
+            isNaN(epreuves) ||
+            ccf < 0 ||
+            ccf > 20 ||
+            epreuves < 0 ||
+            epreuves > 20
+        ) {
+            erreur.innerHTML =
+                "Entre deux notes comprises entre 0 et 20.";
+
+            erreur.style.display = "block";
+            return;
+        }
+
+        /*
+         * Simulation simple :
+         * 50 % CCF
+         * 50 % épreuves terminales
+         */
+
+        const moyenne =
+            (ccf + epreuves) / 2;
+
+        let mention = "";
+
+        if (moyenne < 10) {
+            mention = "Non admis";
+        }
+        else if (moyenne < 12) {
+            mention = "Admis";
+        }
+        else if (moyenne < 14) {
+            mention = "Mention Assez bien";
+        }
+        else if (moyenne < 16) {
+            mention = "Mention Bien";
+        }
+        else {
+            mention = "Mention Très bien";
+        }
+
+        document.getElementById("note").innerHTML =
+            moyenne.toFixed(2) + " / 20";
+
+        document.getElementById("mention").innerHTML =
+            mention;
+
+        resultat.style.display = "block";
+    }
+</script>
+
+</body>
+</html>
