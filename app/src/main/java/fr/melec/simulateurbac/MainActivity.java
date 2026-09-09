@@ -2,7 +2,8 @@ package fr.melec.simulateurbac;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 public class MainActivity extends Activity {
 
@@ -10,11 +11,14 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TextView texte = new TextView(this);
-        texte.setText("Simulateur BAC MELEC 2026");
-        texte.setTextSize(24);
-        texte.setPadding(40, 80, 40, 40);
+        WebView webView = new WebView(this);
 
-        setContentView(texte);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+
+        webView.loadUrl("file:///android_asset/index.html");
+
+        setContentView(webView);
     }
 }
